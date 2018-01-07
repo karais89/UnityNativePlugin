@@ -32,3 +32,16 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation files('libs/classes.jar')
 }
+
+task deleteObjectJar(type: Delete){
+    delete 'release/AndroidPlugin.jar'
+}
+
+task exportJar(type: Copy){
+    from('build/intermediates/bundles/release/')
+    into('release/')
+    include('classes.jar')
+    rename('classes.jar', 'AndroidPlugin.jar')
+}
+
+exportJar.dependsOn(deleteObjectJar, build)
