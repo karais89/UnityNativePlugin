@@ -18,7 +18,7 @@ public class PluginTest : MonoBehaviour
                 Debug.Log("plugin instance is null");
                 return;
             }
-            _plugin.Call("init", this.gameObject);
+            _plugin.Call("init", this.gameObject.name);
         }
     }
 
