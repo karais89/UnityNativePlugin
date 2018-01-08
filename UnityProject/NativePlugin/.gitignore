@@ -37,4 +37,15 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+# JetBrains
+.idea/.idea.NativePlugin/riderModule.iml
+.idea/.idea.NativePlugin/.idea/contentModel.xml
+.idea/.idea.NativePlugin/.idea/indexLayout.xml
+.idea/.idea.NativePlugin/.idea/modules.xml
+.idea/.idea.NativePlugin/.idea/workspace.xml
+Assets/Plugins/Editor/JetBrains.meta
+Assets/Plugins/Editor/JetBrains/Unity3DRider.cs
+Assets/Plugins/Editor/JetBrains/Unity3DRider.cs.meta
+
+
 # End of https://www.gitignore.io/api/unity
