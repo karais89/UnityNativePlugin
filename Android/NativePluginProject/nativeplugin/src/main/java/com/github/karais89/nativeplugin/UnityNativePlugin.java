@@ -1,6 +1,12 @@
 package com.github.karais89.nativeplugin;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.unity3d.player.UnityPlayer;
 
 /**
@@ -76,5 +82,62 @@ public class UnityNativePlugin {
         }
 
         UnityPlayer.UnitySendMessage(unityGameObjName, methodName, message);
+    }
+
+    // NativeHelper Method get unityCurrentActivity4
+    public static Context getCurrentContext() {
+        Context context = UnityPlayer.currentActivity;
+        return context;
+    }
+
+    // runonUIThread - Thread Safe
+    public static void startActivityOnUiThread(final Intent intent) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                getCurrentContext().startActivity(intent);
+            }
+        };
+        executeOnUIThread(runnable);
+    }
+
+    // Helper for running a runnable on UI thread
+    public static void executeOnUIThread(Runnable runnableThread) {
+        // Get current active activity
+        Activity currentActivity = (Activity) getCurrentContext();
+        if (currentActivity != null) {
+            currentActivity.runOnUiThread(runnableThread);
+        }
+    }
+
+    // 안드로이드 클립 보드 복사
+    // https://stackoverflow.com/questions/14189544/copy-with-clipboard-manager-that-supports-old-and-new-android-versions
+    public boolean clipBoardCopy(String msg) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            final android.content.ClipboardManager clipboardManager = (android.content.ClipboardManager) getCurrentContext()
+                    .getSystemService(Context.CLIPBOARD_SERVICE);
+            final android.content.ClipData clipData = android.content.ClipData
+                    .newPlainText("text label", msg);
+            clipboardManager.setPrimaryClip(clipData);
+            return true;
+        } else {
+            final android.text.ClipboardManager clipboardManager = (android.text.ClipboardManager) getCurrentContext()
+                    .getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboardManager.setText(msg);
+            return true;
+        }
+    }
+
+    // 안드로이드 Toast Message
+    public void Toast(String msg) {
+        Toast(msg, 0);
+    }
+
+    public void Toast(String msg, int type) {
+        if (type == 0) {
+            Toast.makeText(getCurrentContext(), msg, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getCurrentContext(), msg, Toast.LENGTH_LONG).show();
+        }
     }
 }

@@ -38,6 +38,15 @@ public class PluginTest : MonoBehaviour
         {
             messge += ("\n" + _plugin.Call<string>("testJavaFuncReturnStr", 70000));
         }
+        
+        if (GUI.Button(new Rect(100, 400, 100, 50), "clipboardCopy"))
+        {
+            bool success = _plugin.Call<bool>("clipBoardCopy", "클립보드 복사 성공");
+            if (success)
+            {
+                _plugin.Call("Toast", "클립보드 복사 성공", 1);
+            }
+        }
 
         GUI.Label(new Rect(Screen.width / 2 - 350, Screen.height / 2 - 150, 700, 300), messge);
     }
